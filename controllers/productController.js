@@ -1,20 +1,19 @@
 import e from "express";
 import Product from "../models/product.js";
 
-export function getProduct(req, res) {
-    Product.find().then(
-        (productList) => {
-            res.json({
-                list: productList
-            })
-        }
-    ).catch(
-        (err) => {
-            res.json({
-                message: "Error fetching products"
-            })
-        }
-    )
+export async function getProduct(req, res) {
+    try {
+        const productList = await Product.find()
+
+        res.json({
+            list: productList
+        })
+    } catch (e) {
+        res.json({
+            message: "Error"
+        })
+    }
+
 
 }
 
