@@ -9,6 +9,21 @@ export function createUser(req, res) {
 
     const newUserData = req.body;
 
+    if (newUserData.type == "admin") {
+        if (req.user == null) {
+            res.json({
+                message: "Only admins can create other admins"
+            })
+            return;
+        }
+        if (req.user.type != "admin") {
+            res.json({
+                message: "Only admins can create other admins"
+            })
+            return;
+        }
+    }
+
     newUserData.password = bcrypt.hashSync(newUserData.password, 10);
 
     const user = new User(newUserData);
@@ -51,7 +66,7 @@ export function loginUser(req, res) {
                         message: "Login successful",
                         token: token
                     })
-                    
+
                 } else {
                     res.json({
                         message: "Invalid password"

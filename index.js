@@ -29,6 +29,7 @@ app.use(
             jwt.verify(token, process.env.SECRET, (err, decoded) => {
                 if (!err) {
                     req.user = decoded;
+                    console.log(decoded);
                 }
             })
         }
@@ -37,7 +38,7 @@ app.use(
     }
 )
 
-app.use("/api/products", productRouter);
+//app.use("/api/products", productRouter);
 app.use("/api/users", userRouter);
 
 app.listen(
