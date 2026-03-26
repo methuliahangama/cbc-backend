@@ -64,7 +64,14 @@ export function loginUser(req, res) {
                     }, process.env.SECRET)
                     res.json({
                         message: "Login successful",
-                        token: token
+                        token: token,
+                        user: {
+                            firstName: user.firstName,
+                            lastName: user.lastName,
+                            type: user.type,
+                            profilePicture: user.profilePicture,
+                            email: user.email
+                        }
                     })
 
                 } else {

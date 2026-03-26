@@ -19,7 +19,7 @@ export function createProduct(req, res) {
         })
     })
         .catch((error) => {
-            res.json({
+            res.status(403).json({
                 message: error
             })
         })
@@ -31,3 +31,24 @@ export function getProducts(req, res) {
     })
 }
 
+export function deleteProduct(req, res) {
+    if(!isAdmin(req)) {
+        res.status(403).json({
+            message: "Only admins can delete products"
+        })
+        return;
+    }
+
+    const productId = req.params.productId;
+
+    Product.deleteOne({ productId: productId }).then(() => {
+        res.status(200).json({
+            message: "Product deleted successfully"
+        })
+    })
+        .catch((error) => {
+            res.status(403).json({
+                message: error
+            })
+        })
+}
