@@ -3,7 +3,7 @@ import { isAdmin } from "./userController.js";
 
 export function createProduct(req, res) {
 
-    if(!isAdmin(req)) {
+    if (!isAdmin(req)) {
         res.json({
             message: "Only admins can add products"
         })
@@ -32,7 +32,7 @@ export function getProducts(req, res) {
 }
 
 export function deleteProduct(req, res) {
-    if(!isAdmin(req)) {
+    if (!isAdmin(req)) {
         res.status(403).json({
             message: "Only admins can delete products"
         })
@@ -51,4 +51,41 @@ export function deleteProduct(req, res) {
                 message: error
             })
         })
+}
+
+export function updateProduct(req, res) {
+    if (!isAdmin(req)) {
+        res.status(403).json({
+            message: "Only admins can update products"
+        })
+        return;
+    }
+
+    const productId = req.params.productId;
+    const updateData = req.body;
+
+    Product.updateOne({ productId: productId }, updateData)
+        .then(() => {
+            res.json({
+                message: "Product updated successfully"
+            });
+        })
+        .catch((error) => {
+            res.status(403).json({
+                message: error
+            })
+        })
+
+}
+
+export async function getProductById(req, res) {
+    try {
+        const productId = req.params.productId;
+        const product = await Product.findOne({ productID: productId });
+        res.json(product);
+    } catch (e) {
+        res.status(500).json({
+            e
+        });
+    }
 }
