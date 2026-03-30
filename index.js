@@ -8,6 +8,7 @@ import productRouter from './routes/productRouter.js';
 import orderRouter from './routes/orderRouter.js';
 import cors from 'cors';
 
+
 dotenv.config();
 
 
@@ -51,8 +52,8 @@ app.use("/api/products", productRouter);
 app.use("/api/orders", orderRouter);
 
 app.listen(
-    3000,
+    5000,
     () => {
-        console.log("Server is running on port 3000");
+        console.log("Server is running on port 5000");
     }
 )
