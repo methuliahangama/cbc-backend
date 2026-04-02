@@ -1,8 +1,9 @@
 import express from 'express';
-import { createUser, loginUser, googleLogin } from '../controllers/userController.js';
+import { createUser, loginUser, googleLogin, getUser } from '../controllers/userController.js';
 
 const userRouter = express.Router();
 
+userRouter.get("/", getUser);
 userRouter.post("/", createUser);
 userRouter.post("/login", loginUser);
 userRouter.post("/google", googleLogin);
