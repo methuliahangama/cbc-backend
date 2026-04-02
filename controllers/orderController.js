@@ -61,7 +61,7 @@ export async function createOrder(req, res) {
 
         res.json({
             message: "Order created successfully",
-            order : savedOrder
+            order: savedOrder
         })
 
     } catch (error) {
@@ -77,11 +77,11 @@ export async function getOrders(req, res) {
             const orders = await Order.find({ email: req.user.email });
             res.json(orders);
             return;
-        }else if (isAdmin(req)) {
+        } else if (isAdmin(req)) {
             const orders = await Order.find({});
             res.json(orders);
             return;
-        }else {
+        } else {
             res.json({
                 message: "Only customers and admins can view orders"
             })
@@ -134,11 +134,51 @@ export async function getQuote(req, res) {
             labeledTotal: labeledTotal
         });
 
-      
+
 
     } catch (error) {
         res.status(500).json({
             message: error.message
         })
     }
+}
+
+export async function updateOrder(req, res) {
+    if (!isAdmin(req)) {
+        res.json({
+            message: "Only admins can update orders"
+        })
+    }
+    try {
+        const orderId = req.params.orderId;
+
+        const order = await Order.findOne({
+            orderId: orderId,
+        });
+        if (order == null) {
+            res.status(404).json({
+                message: "Order with ID " + orderId + " not found"
+            });
+            return;
+        }
+        const notes = req.body.notes;
+        const status = req.body.status;
+
+        const updatedOrder = await Order.findOneAndUpdate(
+            { orderId: orderId },
+            { notes: notes, status: status }
+        );
+
+        res.json({
+            message: "Order updated successfully",
+            updateOrder: updatedOrder
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            message: error.message
+        });
+    }
+
 }
